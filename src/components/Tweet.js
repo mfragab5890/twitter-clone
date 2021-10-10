@@ -9,10 +9,7 @@ class Tweet extends React.Component {
   }
 
   render(){
-    const {tweetId} = this.props
-    const {tweet} = this.props
-    const {user} = this.props
-    const {authedUser} = this.props
+    const { tweetId, tweet, user, authedUser } = this.props
     const date = formatDate(tweet.timestamp)
     const tweetData = formatTweet(tweet,user,authedUser,tweet.replyingTo)
 
