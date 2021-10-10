@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { handleInitialData } from '../actions/shared'
+import Dashboard from './Dashboard'
+import Loader from './Loader'
 
 class App extends Component {
 
@@ -9,6 +11,7 @@ class App extends Component {
   }
 
   render() {
+    const {loading} = this.props
     return (
       <div>
         <div className="ui pointing menu">
@@ -27,12 +30,23 @@ class App extends Component {
             </div>
           </div>
         </div>
-        <div className="ui segment">
-          <p></p>
-        </div>
+        {
+          loading ?
+            <Loader /> :
+            <div className="ui centered container segment">
+              <Dashboard />
+            </div>
+        }
+
       </div>
     )
   }
+}
+
+const mapStateToProps = ({authedUser}) => {
+  return {
+    loading : authedUser === null
+  };
 }
 
 export default connect()(App)
