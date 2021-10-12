@@ -1,12 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { formatTweet, formatDate } from '../utils/helpers'
+import { handleTweetLikeToggle } from '../actions/tweets'
 
 class Tweet extends React.Component {
 
-  handleToggleLike = (e, id) => {
+  handleToggleLike = (e) => {
     e.preventDefault();
-    console.log(e.target.id, 'has been liked');
+    const { authedUser, dispatch } = this.props
+    const { id, hasLiked } = this.props.tweet
+    dispatch(handleTweetLikeToggle({ id, hasLiked, authedUser }))
 
   }
 
@@ -15,7 +18,7 @@ class Tweet extends React.Component {
     console.log(e.target.id, 'commented');
   }
 
-  handleShowReplies = (e, id) => {
+  handleShowReplies = (e) => {
     e.preventDefault();
     console.log(e.target.id, 'replies');
   }
@@ -39,17 +42,16 @@ class Tweet extends React.Component {
             <img className="ui avatar circular image" src={avatar} alt = "avatar" />
           </a>
           <div className="content">
-            <a className="author">{name}</a>
+            <a className="author" href = '/'>{name}</a>
             <div className="metadata">
               <span className="date">{date}</span>
             </div>
             <div className="text">
               {text}
             </div>
-            <div className="actions">
+            <div id = {id} className="actions">
 
               <button
-                id = {id}
                 className="ui button"
                 style = {{border: "none", background: "none", outline:'none'}}
                 onClick = {this.handleAddReply}
@@ -59,7 +61,6 @@ class Tweet extends React.Component {
               </button>
 
               <button
-                id = {id}
                 className="ui button"
                 style = {{border: "none", background: "none", outline:'none'}}
                 onClick = {this.handleToggleLike}
@@ -74,7 +75,6 @@ class Tweet extends React.Component {
               </button>
 
               <button
-                id = {id}
                 className = {replies > 0 ? "ui button" : "ui disabled button"}
                 style = {{border: "none", background: "none", outline:'none'}}
                 onClick = {this.handleShowReplies}
