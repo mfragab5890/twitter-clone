@@ -4,44 +4,91 @@ import { formatTweet, formatDate } from '../utils/helpers'
 
 class Tweet extends React.Component {
 
+  handleToggleLike = (e, id) => {
+    e.preventDefault();
+    console.log(e.target.id, 'has been liked');
+
+  }
+
+  handleAddReply = (e) => {
+    e.preventDefault();
+    console.log(e.target.id, 'commented');
+  }
+
+  handleShowReplies = (e, id) => {
+    e.preventDefault();
+    console.log(e.target.id, 'replies');
+  }
+
   componentDidMount() {
-    console.log(this.props);
   }
 
   render(){
-    const { tweetId, tweet, user, authedUser } = this.props
+    const { tweet } = this.props
     const date = formatDate(tweet.timestamp)
-    const tweetData = formatTweet(tweet,user,authedUser,tweet.replyingTo)
+    const {id, avatar, name, text, hasLiked, likes, replies, parent} = tweet
+    if (tweet === null) {
+      return (<p>This Tweet Dosen't Exists!!!</p>);
+    }
 
-
-    return !tweetData.parent ? (
+    return !parent ? (
 
       <div className = "ui segment">
         <div className="ui comment">
-          <a className="avatar">
-            <img className="ui avatar image" src={tweetData.avatar} alt = "avatar" />
+          <a className="avatar" href = {avatar}>
+            <img className="ui avatar circular image" src={avatar} alt = "avatar" />
           </a>
           <div className="content">
-            <a className="author">{tweetData.name}</a>
+            <a className="author">{name}</a>
             <div className="metadata">
               <span className="date">{date}</span>
             </div>
             <div className="text">
-              {tweetData.text}
+              {text}
             </div>
             <div className="actions">
-              <a className="reply">
-                <i class="reply icon"></i>
+
+              <button
+                id = {id}
+                className="ui button"
+                style = {{border: "none", background: "none", outline:'none'}}
+                onClick = {this.handleAddReply}
+                >
+                <i className="reply icon"></i>
                 &nbsp;Reply
-              </a>
-              <a className="left floated">
-                <i className={tweetData.hasLiked ? "heart like red icon" : "heart like grey icon"}></i>
-                  &nbsp;{tweetData.likes} likes
-              </a>
-              <a className="right floated">
-                <i className="comment blue icon"></i>
-                &nbsp;{tweetData.replies} comments
-              </a>
+              </button>
+
+              <button
+                id = {id}
+                className="ui button"
+                style = {{border: "none", background: "none", outline:'none'}}
+                onClick = {this.handleToggleLike}
+                >
+                <i className={hasLiked ? "heart like red icon" : "heart like grey icon"}></i>
+                &nbsp;
+                {
+                  likes > 0 ?
+                  (likes === 1 ? likes + ' Like' : likes + ' Likes') :
+                  null
+                }
+              </button>
+
+              <button
+                id = {id}
+                className = {replies > 0 ? "ui button" : "ui disabled button"}
+                style = {{border: "none", background: "none", outline:'none'}}
+                onClick = {this.handleShowReplies}
+                >
+                <i className = { replies > 0 ? "comment blue icon" : "comment icon" } >
+                </i>
+
+                &nbsp;{
+                  replies > 0 ?
+                  (replies === 1 ? replies + ' Comment' : replies + ' Comments') :
+                  null
+                }
+              </button>
+
             </div>
           </div>
         </div>
@@ -55,9 +102,11 @@ class Tweet extends React.Component {
 const mapStateToProps = ({authedUser,tweets, users},{tweetId}) => {
   const tweet =  tweets[tweetId]
   const user = users[tweet.author]
+  const parentTweet = tweet ? tweets[tweet.replyingTo] : null
+  const formatedTweet = tweet ? formatTweet( tweet, user, authedUser, parentTweet ) : null
+
   return {
-    tweet : tweet,
-    user : user,
+    tweet : formatedTweet,
     authedUser : authedUser,
   };
 }
