@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { handleInitialData } from '../actions/shared'
 import Dashboard from './Dashboard'
 import Loader from './Loader'
+import LoadingBar from 'react-redux-loading'
 
 class App extends Component {
 
@@ -14,11 +15,12 @@ class App extends Component {
     const {loading} = this.props
     return (
       <div>
+        <LoadingBar />
         <div className="ui pointing menu">
-          <a className="active item">
+          <a className="active item" href = "/">
             Home
           </a>
-          <a className="item">
+          <a className="item" href = "/">
             <i className="plus circle green icon"></i>New Tweet
           </a>
           <div className="right menu">
@@ -49,4 +51,4 @@ const mapStateToProps = ({authedUser}) => {
   };
 }
 
-export default connect()(App)
+export default connect(mapStateToProps)(App)
