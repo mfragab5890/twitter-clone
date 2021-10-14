@@ -1,9 +1,15 @@
 let users = {
+  mostafa_fouad: {
+    id: "mostafa_fouad",
+    name: "Mostafa Fouad",
+    avatarURL: process.env.PUBLIC_URL + 'media/photos/mostafa.jpg',
+    tweets: [ '8xf0y6ziyjabvozdd253nd' ]
+  },
   sarah_edo: {
     id: "sarah_edo",
     name: "Sarah Drasner",
     avatarURL: "https://tylermcginnis.com/would-you-rather/sarah.jpg",
-    tweets: ['8xf0y6ziyjabvozdd253nd', 'hbsc73kzqi75rg7v1e0i6a', '2mb6re13q842wu8n106bhk', '6h5ims9iks66d4m7kqizmv', '3sklxkf9yyfowrf0o1ftbb'],
+    tweets: ['hbsc73kzqi75rg7v1e0i6a', '2mb6re13q842wu8n106bhk', '6h5ims9iks66d4m7kqizmv', '3sklxkf9yyfowrf0o1ftbb'],
   },
   tylermcginnis: {
     id: "tylermcginnis",
@@ -23,7 +29,7 @@ let tweets = {
   "8xf0y6ziyjabvozdd253nd": {
     id: "8xf0y6ziyjabvozdd253nd",
     text: "Shoutout to all the speakers I know for whom English is not a first language, but can STILL explain a concept well. It's hard enough to give a good talk in your mother tongue!",
-    author: "sarah_edo",
+    author: "mostafa_fouad",
     timestamp: 1518122597860,
     likes: ['tylermcginnis'],
     replies: ['fap8sdxppna8oabnxljzcv', '3km0v4hf1ps92ajf4z2ytg'],
@@ -257,11 +263,22 @@ export function _saveTweet ({ text, author, replyingTo }) {
     })
 
     setTimeout(() => {
-      tweets = {
-        ...tweets,
-        [formattedTweet.id]: formattedTweet,
+      if (replyingTo !== null) {
+        tweets = {
+          ...tweets,
+          [replyingTo]:{
+            ...tweets[replyingTo],
+            replies: tweets[replyingTo].replies.concat([formattedTweet.id])
+          },
+          [formattedTweet.id]: formattedTweet,
+        }
       }
-
+      else {
+        tweets = {
+          ...tweets,
+          [formattedTweet.id]: formattedTweet,
+        }
+      }
       users = {
         ...users,
         [author]: {
