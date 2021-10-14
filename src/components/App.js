@@ -20,7 +20,7 @@ class App extends Component {
           <a className="active item" href = "/">
             Home
           </a>
-          <a className="item" href = "/">
+          <a className="item" href = "/new-tweet">
             <i className="plus circle green icon"></i>New Tweet
           </a>
           <div className="right menu">
