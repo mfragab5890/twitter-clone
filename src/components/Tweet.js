@@ -52,16 +52,16 @@ class Tweet extends React.Component {
             <div id = {id} className="actions">
 
               <button
-                className="ui button"
+                className="ui tiny circular button"
                 style = {{border: "none", background: "none", outline:'none'}}
                 onClick = {this.handleAddReply}
                 >
                 <i className="reply icon"></i>
-                &nbsp;Reply
+                Reply
               </button>
 
               <button
-                className="ui button"
+                className="ui tiny circular button"
                 style = {{border: "none", background: "none", outline:'none'}}
                 onClick = {this.handleToggleLike}
                 >
@@ -75,7 +75,7 @@ class Tweet extends React.Component {
               </button>
 
               <button
-                className = {replies > 0 ? "ui button" : "ui disabled button"}
+                className = {replies > 0 ? "ui tiny circular button" : "ui tiny circular disabled button"}
                 style = {{border: "none", background: "none", outline:'none'}}
                 onClick = {this.handleShowReplies}
                 >
