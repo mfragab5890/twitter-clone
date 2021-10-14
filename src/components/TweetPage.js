@@ -6,21 +6,29 @@ import NewTweet from './NewTweet'
 class TweetPage extends React.Component {
 
   render(){
-    const { tweetId, repliesIds } = this.props
+    const { tweetId, repliesIds, author } = this.props
     return (
       <div>
         <Reply tweetId = {tweetId}/>
+
         <NewTweet />
-        <div className = 'replies'>
-          <h3>previuos replies</h3>
-          {
-            repliesIds.map((id) => {
-              return (
-                <Reply key = {id} tweetId = {id}/>
-              );
-          })
+        {
+          repliesIds.length > 0 ?
+          (
+            <div className = 'replies'>
+              <h3 className = "ui center aligned header">previuos replies</h3>
+              {
+                repliesIds.map((id) => {
+                  return (
+                    <Reply key = {id} tweetId = {id}/>
+                  );
+                })
+              }
+            </div>
+          )
+          :(<h4 className = "ui center aligned header">No previuos replies!! be the first to reply to {author}</h4>)
         }
-        </div>
+
       </div>
     );
   };
@@ -32,6 +40,7 @@ const mapStateToProps = ({tweets},{tweetId}) => {
   return {
     tweetId : tweet ? tweetId : null,
     repliesIds : tweet ? tweet.replies : null,
+    author : tweet.author
   };
 }
 
