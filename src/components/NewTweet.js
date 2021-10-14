@@ -1,5 +1,7 @@
 import React from 'react'
-
+import { connect } from 'react-redux'
+import { handleAddTweet } from '../actions/tweets'
+import TweetPage from './TweetPage'
 class NewTweet extends React.Component {
   state = {
     text : '',
@@ -26,10 +28,11 @@ class NewTweet extends React.Component {
     }
   }
 
-  handleAddReply = (e) => {
+  handleAddReply = async (e) => {
     e.preventDefault()
-    const text = this.state.text
-    console.log(text);
+    const { text } = this.state
+    const { dispatch, replyingTo } = this.props
+    await dispatch( handleAddTweet( text, replyingTo ) )
     this.setState({
       text : '',
       enableSubmit : false,
@@ -63,10 +66,19 @@ class NewTweet extends React.Component {
             <i className="icon edit"></i> Add Tweet Reply
           </div>
         </form>
+        <hr />
       </div>
 
     );
   }
 }
 
-export default NewTweet
+const mapStateToProps = ({tweets},{ tweetId }) => {
+  const tweet =  tweets[tweetId]
+
+  return {
+    replyingTo : tweet? tweetId : null,
+  };
+}
+
+export default connect(mapStateToProps)(NewTweet)
