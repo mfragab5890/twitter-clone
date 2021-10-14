@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { handleAddTweet } from '../actions/tweets'
-import TweetPage from './TweetPage'
+
 class NewTweet extends React.Component {
   state = {
     text : '',
