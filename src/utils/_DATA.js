@@ -2,7 +2,7 @@ let users = {
   mostafa_fouad: {
     id: "mostafa_fouad",
     name: "Mostafa Fouad",
-    avatarURL: process.env.PUBLIC_URL + 'media/photos/mostafa.jpg',
+    avatarURL: '../../media/photos/mostafa.jpg',
     tweets: [ '8xf0y6ziyjabvozdd253nd' ]
   },
   sarah_edo: {
