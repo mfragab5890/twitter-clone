@@ -8,10 +8,10 @@ class TweetPage extends React.Component {
   render(){
     const { tweetId, repliesIds, author } = this.props
     return (
-      <div>
+      <div className = 'ui centered container comments'>
         <Reply tweetId = {tweetId}/>
 
-        <NewTweet />
+        <NewTweet tweetId = { tweetId }/>
         {
           repliesIds.length > 0 ?
           (
@@ -34,13 +34,14 @@ class TweetPage extends React.Component {
   };
 }
 
-const mapStateToProps = ({tweets},{tweetId}) => {
+const mapStateToProps = ({tweets}, props) => {
+  const { tweetId } = props.match.params
   const tweet =  tweets[tweetId]
 
   return {
     tweetId : tweet ? tweetId : null,
-    repliesIds : tweet ? tweet.replies : null,
-    author : tweet.author
+    repliesIds : tweet ? tweet.replies.sort((a,b) => tweets[b].timestamp - tweets[a].timestamp ) : [],
+    author : tweet? tweet.author : null
   };
 }
 
