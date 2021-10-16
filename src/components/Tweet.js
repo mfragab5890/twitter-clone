@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { formatTweet, formatDate } from '../utils/helpers'
 import { handleTweetLikeToggle } from '../actions/tweets'
 
@@ -15,12 +16,16 @@ class Tweet extends React.Component {
 
   handleAddReply = (e) => {
     e.preventDefault();
-    console.log(e.target.id, 'commented');
+    const { id } = e.target.parentNode
+    console.log(id);
+    this.props.history.push(`/tweet/${id}`)
   }
 
   handleShowReplies = (e) => {
     e.preventDefault();
-    console.log(e.target.id, 'replies');
+    const { id } = e.target.parentNode
+    console.log(id);
+    this.props.history.push(`/replies/${id}`)
   }
 
   componentDidMount() {
@@ -44,7 +49,8 @@ class Tweet extends React.Component {
           <div className="content">
             <a className="author" href = '/'>{name}</a>
             <div className="metadata">
-              <span className="date">{date}</span>
+              <span className="date">{date}</span> <br/>
+              {parent ? <span className="extra">{parent.author}</span> : null}
             </div>
             <div className="text">
               {text}
@@ -111,4 +117,4 @@ const mapStateToProps = ({authedUser,tweets, users},{tweetId}) => {
   };
 }
 
-export default connect(mapStateToProps)(Tweet)
+export default withRouter(connect(mapStateToProps)(Tweet))
