@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { formatTweet, formatDate } from '../utils/helpers'
 import { handleTweetLikeToggle } from '../actions/tweets'
 
@@ -15,12 +16,19 @@ class Reply extends React.Component {
 
   handleAddReply = (e) => {
     e.preventDefault();
-    console.log(e.target.id, 'commented');
+    const { id } = e.target.parentNode
+    this.props.history.push(`/tweet/${id}`)
   }
 
   handleShowReplies = (e) => {
     e.preventDefault();
-    console.log(e.target.id, 'replies');
+    const { id } = e.target.parentNode
+    this.props.history.push(`/replies/${id}`)
+  }
+  handleShowParent = (e) => {
+    e.preventDefault();
+    const { id } = e.target
+    this.props.history.push(`/replies/${id}`)
   }
 
   componentDidMount() {
@@ -42,9 +50,23 @@ class Reply extends React.Component {
             <img className="ui avatar circular image" src={avatar} alt = "avatar" />
           </a>
           <div className="content">
-            <a className="author" href = '/'>{name}</a>
+            <span className="author" >{name}</span>
             <div className="metadata">
               <span className="date">{date}</span>
+            </div>
+            <div className="metadata">
+              {
+                parent ?
+                  <span
+                    id = {parent.id}
+                    style = {{cursor: 'pointer'}}
+                    className="meta"
+                    onClick = { this.handleShowParent}
+                    >Replying to {parent.author}
+                  </span>
+                  : null
+              }
+
             </div>
             <div className="text">
               {text}
@@ -111,4 +133,4 @@ const mapStateToProps = ({authedUser,tweets, users},{tweetId}) => {
   };
 }
 
-export default connect(mapStateToProps)(Reply)
+export default withRouter(connect(mapStateToProps)(Reply))
