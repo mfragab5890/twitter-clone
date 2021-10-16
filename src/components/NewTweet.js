@@ -1,12 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import { handleAddTweet } from '../actions/tweets'
 
 class NewTweet extends React.Component {
   state = {
     text : '',
     enableSubmit : false,
-    charLeft : 200
+    charLeft : 200,
+    toHome : false
   }
 
   handleTextChange = (e) => {
@@ -16,14 +18,16 @@ class NewTweet extends React.Component {
       this.setState({
         text : value,
         enableSubmit : true,
-        charLeft : 200 - value.length
+        charLeft : 200 - value.length,
+        toHome : false,
       })
     }
     else {
       this.setState({
-        text : value,
+        text : '',
         enableSubmit : false,
         charLeft : 200,
+        toHome : false,
       })
     }
   }
@@ -37,11 +41,15 @@ class NewTweet extends React.Component {
       text : '',
       enableSubmit : false,
       charLeft : 200,
+      toHome : replyingTo ? false : true,
     })
   }
 
   render() {
-    const { enableSubmit, text, charLeft } = this.state
+    const { enableSubmit, text, charLeft, toHome } = this.state
+    if (toHome === true) {
+      return <Redirect to = '/' />
+    }
     return (
       <div className = "ui container">
         <h3 className = "ui center aligned header">Add New Tweet</h3>
@@ -77,7 +85,7 @@ const mapStateToProps = ({tweets},{ tweetId }) => {
   const tweet =  tweets[tweetId]
 
   return {
-    replyingTo : tweet? tweetId : null,
+    replyingTo : tweet? tweet.id : null,
   };
 }
 
