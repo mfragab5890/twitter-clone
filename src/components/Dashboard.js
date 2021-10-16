@@ -8,10 +8,6 @@ import Replies from './Replies'
 
 class Dashboard extends React.Component {
 
-  componentDidMount() {
-    console.log(this.props);
-  }
-
   render(){
     const {tweetsIds} = this.props
 

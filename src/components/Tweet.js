@@ -17,14 +17,12 @@ class Tweet extends React.Component {
   handleAddReply = (e) => {
     e.preventDefault();
     const { id } = e.target.parentNode
-    console.log(id);
     this.props.history.push(`/tweet/${id}`)
   }
 
   handleShowReplies = (e) => {
     e.preventDefault();
     const { id } = e.target.parentNode
-    console.log(id);
     this.props.history.push(`/replies/${id}`)
   }
 
