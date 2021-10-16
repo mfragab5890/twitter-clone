@@ -1,28 +1,47 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { handleInitialData } from '../actions/shared'
 import Dashboard from './Dashboard'
 import Loader from './Loader'
 import LoadingBar from 'react-redux-loading'
 
 class App extends Component {
+  state = {
+    activeTab : 1,
+  }
 
   async componentDidMount() {
     this.props.dispatch(handleInitialData())
   }
 
+  handleActiveTab = (e) => {
+    const {id} = e.target
+    if (id === 'home') {
+      this.setState({
+        activeTab : 1
+      })
+    }
+    else {
+      this.setState({
+        activeTab : 2
+      })
+    }
+  }
+
   render() {
     const {loading} = this.props
+    const { activeTab } = this.state
     return (
-      <div>
+      <Fragment>
         <LoadingBar />
         <div className="ui pointing menu">
-          <a className="active item" href = "/">
+          <Link id = 'home' to = '/' className={ activeTab === 1 ? "active item" : "item" } onClick = {this.handleActiveTab}>
             Home
-          </a>
-          <a className="item" href = "/new-tweet">
+          </Link>
+          <Link id = 'new' className={ activeTab === 2 ? "active item" : "item" } to = '/new-tweet' onClick = {this.handleActiveTab}>
             <i className="plus circle green icon"></i>New Tweet
-          </a>
+          </Link>
           <div className="right menu">
             <div className="item">
               <div className="ui transparent icon input">
@@ -40,7 +59,7 @@ class App extends Component {
             </div>
         }
 
-      </div>
+      </Fragment>
     )
   }
 }
