@@ -24,7 +24,7 @@ const tweets = (state = {}, action) => {
           if (tweet.replyingTo !== null) {
             replyingTo = {
               [tweet.replyingTo]:{
-                ...state[replyingTo],
+                ...state[tweet.replyingTo],
                 replies: state[tweet.replyingTo].replies.concat([tweet.id])
               },
             }
