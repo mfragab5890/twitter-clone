@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import {Route} from 'react-router-dom'
 import Tweet from './Tweet'
 import NewTweet from './NewTweet'
+import TweetPage from './TweetPage'
+import Replies from './Replies'
 
 class Dashboard extends React.Component {
 
@@ -14,13 +16,14 @@ class Dashboard extends React.Component {
     const {tweetsIds} = this.props
 
     return (
-      <div>
+      <div className = 'ui container'>
 
         <Route exact path='/new-tweet' render ={() => (
             <NewTweet />
           )}
         />
-
+      <Route exact path='/tweet/:tweetId' component = { TweetPage } />
+      <Route exact path='/replies/:tweetId' component = { Replies } />
       <Route exact path = '/' render ={() => (
           <div className="ui centered container comments">
             {
