@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { handleAddTweet } from '../actions/tweets'
+import { handleAddTweet } from '../actions/shared'
 
 class NewTweet extends React.Component {
   state = {
